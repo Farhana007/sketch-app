@@ -47,8 +47,11 @@ class CanvasImageDownload extends ChangeNotifier {
         // Showing a success snackBar
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            backgroundColor: Colors.greenAccent,
-            content: Text('Image saved successfully'),
+            backgroundColor: Color.fromARGB(255, 2, 56, 30),
+            content: Text(
+              'Image saved successfully',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         );
       } else {

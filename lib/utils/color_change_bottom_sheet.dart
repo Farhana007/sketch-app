@@ -12,6 +12,14 @@ showColorPickerBottomSheet(BuildContext context) {
 
   // Color List //
   final List<Color> colorOptions = [
+    const Color.fromARGB(255, 106, 14, 8),
+    const Color.fromARGB(255, 57, 154, 60),
+    const Color.fromARGB(255, 4, 15, 24),
+    const Color.fromARGB(255, 240, 118, 4),
+    const Color.fromARGB(255, 45, 30, 49),
+    const Color.fromARGB(255, 214, 70, 70),
+    const Color.fromARGB(255, 69, 68, 68),
+    const Color.fromARGB(255, 55, 0, 0),
     const Color.fromARGB(255, 200, 66, 57),
     const Color.fromARGB(255, 18, 106, 21),
     const Color.fromARGB(255, 19, 32, 43),
@@ -27,7 +35,7 @@ showColorPickerBottomSheet(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return SizedBox(
-        height: 200,
+        height: 150,
         child: Column(
           children: [
             const Padding(
@@ -51,7 +59,7 @@ showColorPickerBottomSheet(BuildContext context) {
                         padding: const EdgeInsets.all(8.0),
                         child: Container()
                             .box
-                            .size(30, 30)
+                            .size(50, 50)
                             .roundedFull
                             .color(color)
                             .make(),
