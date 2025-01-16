@@ -4,9 +4,7 @@ import 'package:sketch_app/provider/download_provider.dart';
 import 'package:sketch_app/provider/sketch_provider.dart';
 import 'package:sketch_app/provider/sketch_setting.dart';
 import 'package:sketch_app/view/new_sketch_screen.dart';
-import 'package:sketch_app/view/sketch_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

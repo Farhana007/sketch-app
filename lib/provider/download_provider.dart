@@ -2,24 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'dart:ui' as ui;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:velocity_x/velocity_x.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 
 /// ---> This is the Download Provider to download Image in Gallery <--- ////
 class CanvasImageDownload extends ChangeNotifier {
-  GlobalKey? canvasKey; //Key will be global
+  GlobalKey? canvasKey; // Key will be global
 
   CanvasImageDownload({required this.canvasKey});
 
   Future<void> saveCanvasImage(BuildContext context) async {
     try {
-      // Request storage permission Using Permission Handler Package
-      PermissionStatus status = await Permission.storage.request();
+      // Request storage permission using Permission Handler Package
+      bool permissionGranted = await _requestPermission();
 
-      // Check if permission is granted
-      if (status.isGranted) {
+      if (permissionGranted) {
         if (canvasKey == null) {
           throw Exception("Canvas key is null.");
         }
@@ -31,7 +29,7 @@ class CanvasImageDownload extends ChangeNotifier {
           throw Exception("Canvas context is null.");
         }
 
-        ///bOUNDary will be the Boudnary that wnats to save as png
+        // Capture the widget as an image
         final boundary = canvasKey!.currentContext!.findRenderObject()
             as RenderRepaintBoundary;
         final image = await boundary.toImage(pixelRatio: 3.0);
@@ -40,31 +38,52 @@ class CanvasImageDownload extends ChangeNotifier {
         if (byteData == null) {
           throw Exception("Failed to encode image data.");
         }
-        //Saving the image using ImageGallerySaver package
-        final imageData = byteData.buffer.asUint8List();
-        await ImageGallerySaver.saveImage(imageData);
 
-        // Showing a success snackBar
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Color.fromARGB(255, 2, 56, 30),
-            content: Text(
-              'Image saved successfully',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+        // Convert the image to a byte array
+        final imageData = byteData.buffer.asUint8List();
+
+        // Save the image using SaverGallery package
+        final result = await SaverGallery.saveImage(
+          imageData,
+          quality: 100,
+          androidRelativePath: "DCIM/appName/images",
+          fileName: "sketchAppImage",
+          skipIfExists: false,
         );
+
+        if (result.isSuccess) {
+          // Showing a success SnackBar
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Color.fromARGB(255, 2, 56, 30),
+              content: Text(
+                'Image saved successfully',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+        } else {
+          throw Exception("Failed to save image.");
+        }
       } else {
         throw Exception("Storage permission denied.");
       }
     } catch (e) {
-      // Showing Error snackBar
+      // Showing Error SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.redAccent,
           content: Text('Failed to save image: $e'),
         ),
       );
+    }
+  }
+
+  Future<bool> _requestPermission() async {
+    if (await Permission.storage.request().isGranted) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

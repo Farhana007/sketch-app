@@ -38,7 +38,7 @@ dependencies:
   velocity_x: ^4.1.2
   provider: ^6.1.1
   permission_handler: ^11.3.0
-  image_gallery_saver: ^2.0.3
+  saver_gallery: ^4.0.1
 
 dev_dependencies:
   flutter_test:
